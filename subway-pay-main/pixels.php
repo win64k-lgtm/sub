@@ -7,7 +7,7 @@ $stmt = $conn->query("SELECT * FROM app");
 $result = $stmt->fetch(PDO::FETCH_ASSOC);
 $google_ads_tag = $result['google_ads_tag'];
 $facebook_ads_tag = $result['facebook_ads_tag'];
-$conn->close();
+$conn = null;
 
 ?>
 
