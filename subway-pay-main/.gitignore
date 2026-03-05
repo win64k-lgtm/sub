@@ -1,0 +1,30 @@
+# Arquivos sensíveis
+.env
+.env.local
+.env.production
+*.backup
+
+# Logs
+*.log
+
+# Arquivos temporários
+*.tmp
+*.temp
+
+# Backups
+*.sql.backup
+*.php.backup
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Dependências (se usar Composer)
+/vendor/
+composer.lock
