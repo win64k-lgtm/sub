@@ -5,28 +5,31 @@
  * Migrado de MySQL para PostgreSQL
  */
 
-// Carregar variáveis de ambiente
-function loadEnvFile($file) {
-    if (!file_exists($file)) {
-        return false;
-    }
-    
-    $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-    foreach ($lines as $line) {
-        if (strpos(trim($line), '#') === 0) continue;
-        
-        if (strpos($line, '=') !== false) {
-            list($name, $value) = explode('=', $line, 2);
-            $_ENV[trim($name)] = trim($value);
+// Carregar variáveis de ambiente (evita redeclare quando o arquivo é incluído mais de uma vez)
+if (!function_exists('loadEnvFile')) {
+    function loadEnvFile($file) {
+        if (!file_exists($file)) {
+            return false;
         }
+        $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        foreach ($lines as $line) {
+            if (strpos(trim($line), '#') === 0) continue;
+            if (strpos($line, '=') !== false) {
+                list($name, $value) = explode('=', $line, 2);
+                $_ENV[trim($name)] = trim($value);
+            }
+        }
+        return true;
     }
-    return true;
 }
 
-// Tentar carregar .env
-$envLoaded = loadEnvFile(__DIR__ . '/.env');
+// Tentar carregar .env (só na primeira inclusão)
+if (!isset($config)) {
+    loadEnvFile(__DIR__ . '/.env');
+}
 
 // Configuração do Railway PostgreSQL (usar variáveis de ambiente se disponíveis)
+if (!isset($config)) {
 $config = array(
     'db_host' => $_ENV['PGHOST'] ?? 'tramway.proxy.rlwy.net',
     'db_port' => $_ENV['PGPORT'] ?? '55414',
@@ -35,11 +38,13 @@ $config = array(
     'db_name' => $_ENV['PGDATABASE'] ?? 'railway',
     'db_sslmode' => $_ENV['PGSSLMODE'] ?? 'require'
 );
+}
 
 /**
  * Função para obter conexão PDO com PostgreSQL
  * Substitui mysqli por PDO
  */
+if (!function_exists('getConnection')) {
 function getConnection() {
     global $config;
     
@@ -69,11 +74,13 @@ function getConnection() {
         die("Erro ao conectar ao banco de dados. Tente novamente mais tarde.");
     }
 }
+}
 
 /**
  * Classe de compatibilidade mysqli -> PDO
  * Permite usar código antigo com nova conexão
  */
+if (!class_exists('MysqliCompatibility')) {
 class MysqliCompatibility {
     private $pdo;
     public $connect_error = null;
@@ -120,7 +127,9 @@ class MysqliCompatibility {
         return $sql;
     }
 }
+}
 
+if (!class_exists('MysqliResultCompatibility')) {
 class MysqliResultCompatibility {
     private $stmt;
     public $num_rows = 0;
@@ -140,10 +149,13 @@ class MysqliResultCompatibility {
         return $this->stmt ? $this->stmt->fetch(PDO::FETCH_BOTH) : null;
     }
 }
+}
 
 // Função auxiliar para criar conexão compatível com código antigo
+if (!function_exists('new_mysqli')) {
 function new_mysqli($host, $user, $pass, $dbname) {
     return new MysqliCompatibility($host, $user, $pass, $dbname);
+}
 }
 
 ?>

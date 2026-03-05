@@ -1,23 +1,22 @@
 <?php
-include "../conectarbanco.php";
+session_start();
+
+require_once __DIR__ . '/../conectarbanco.php';
+
 try {
     $conn = getConnection();
-    $stmt = $conn->query("SELECT nome_unico, nome_um, nome_dois FROM app");
+    $stmt = $conn->query("SELECT nome_unico, nome_um, nome_dois FROM app LIMIT 1");
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($row) {
         $nomeUnico = $row["nome_unico"];
         $nomeUm = $row["nome_um"];
         $nomeDois = $row["nome_dois"];
     } else {
-        return false;
+        $nomeUnico = $nomeUm = $nomeDois = '';
     }
 } catch (PDOException $e) {
     die("Conexão falhou: " . $e->getMessage());
 }
-?>
-
-<?php
-session_start();
 
 $email = $senha = "";
 $emailErr = $senhaErr = "";
@@ -35,7 +34,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = validateForm($_POST["email"]);
     $senha = validateForm($_POST["senha"]);
 
-    include "./../conectarbanco.php";
     try {
         $conn = getConnection();
         $stmt = $conn->prepare("SELECT * FROM appconfig WHERE email = :email AND senha = :senha");
