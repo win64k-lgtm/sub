@@ -1,4 +1,84 @@
 <?php
+session_start(); // DEVE SER A PRIMEIRA LINHA
+
+// Verificação de login deve vir logo após
+if (!isset($_SESSION["email"])) {
+    header("Location: ../login");
+    exit();
+}
+
+$email = $_SESSION["email"];
+
+session_start(); // DEVE SER A PRIMEIRA LINHA
+
+// Verificação de login deve vir logo após
+if (!isset($_SESSION["email"])) {
+    header("Location: ../login");
+    exit();
+}
+
+$email = $_SESSION["email"];
+
+session_start(); // DEVE SER A PRIMEIRA LINHA
+
+// Verificação de login deve vir logo após
+if (!isset($_SESSION["email"])) {
+    header("Location: ../login");
+    exit();
+}
+
+$email = $_SESSION["email"];
+
+session_start(); // DEVE SER A PRIMEIRA LINHA
+
+// Verificação de login deve vir logo após
+if (!isset($_SESSION["email"])) {
+    header("Location: ../login");
+    exit();
+}
+
+$email = $_SESSION["email"];
+
+session_start(); // DEVE SER A PRIMEIRA LINHA
+
+// Verificação de login deve vir logo após
+if (!isset($_SESSION["email"])) {
+    header("Location: ../login");
+    exit();
+}
+
+$email = $_SESSION["email"];
+
+session_start(); // DEVE SER A PRIMEIRA LINHA
+
+// Verificação de login deve vir logo após
+if (!isset($_SESSION["email"])) {
+    header("Location: ../login");
+    exit();
+}
+
+$email = $_SESSION["email"];
+
+session_start(); // DEVE SER A PRIMEIRA LINHA
+
+// Verificação de login deve vir logo após
+if (!isset($_SESSION["email"])) {
+    header("Location: ../login");
+    exit();
+}
+
+$email = $_SESSION["email"];
+
+session_start(); // DEVE SER A PRIMEIRA LINHA
+
+// Verificação de login deve vir logo após
+if (!isset($_SESSION["email"])) {
+    header("Location: ../login");
+    exit();
+}
+
+$email = $_SESSION["email"];
+
 include "./../conectarbanco.php";
 
 try {
